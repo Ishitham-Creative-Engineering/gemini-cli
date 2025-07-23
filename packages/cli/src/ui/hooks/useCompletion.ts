@@ -392,13 +392,10 @@ export function useCompletion(
       });
 
       const suggestions: Suggestion[] = files
-        .map((file: string) => {
-          const relativePath = path.relative(cwd, file);
-          return {
-            label: relativePath,
-            value: escapePath(relativePath),
-          };
-        })
+        .map((file: string) => ({
+          label: file,
+          value: escapePath(file),
+        }))
         .filter((s) => {
           if (fileDiscoveryService) {
             return !fileDiscoveryService.shouldIgnoreFile(
@@ -440,7 +437,7 @@ export function useCompletion(
             fetchedSuggestions = await findFilesRecursively(
               cwd,
               prefix,
-              fileDiscoveryService,
+              null,
               filterOptions,
             );
           }
